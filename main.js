@@ -1,9 +1,6 @@
 /*
 Script für die Neuseelandreise
 */
-let lat = -44.116667;
-let lng = 170.166667;
-let zoom = 11;
 
 let stop = {
     lat: -44.116667,
@@ -13,8 +10,9 @@ let stop = {
     nr: 25,
     user: "PriPh625",
 };
+
 // Karte initialisieren
-let map = L.map('map').setView([lat, lng], zoom);
+let map = L.map('map').setView([stop.lat, stop.lng], stop.zoom);
 
 // Hintergrund definieren
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -23,13 +21,13 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     }).addTo(map);
 
  // Markerzeichnen
-      let marker = L.marker([lat, lng]).addTo(map);
+      let marker = L.marker([stop.lat, stop.lng]).addTo(map);
 
 //Popup definieren und öffnen
-      marker.bindPopup(`<h2>Lake Pukaki</h2> 
+      marker.bindPopup(`<h2>${stop.title}</h2> 
         <ul> 
-            <li>Geogr. Breite: ${lat.toFixed(5)}°</li> 
-            <li>Geogr. Länge: ${lng.toFixed(5)}°</li> 
+            <li>Geogr. Breite: ${stop.lat.toFixed(5)}°</li> 
+            <li>Geogr. Länge: ${stop.lng.toFixed(5)}°</li> 
         </ul>
      `).openPopup(); 
 

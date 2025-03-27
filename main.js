@@ -11,9 +11,8 @@ let stop = {
     zoom: 11,
     title: "Lake Pukaki",
     nr: 25,
-    user: "PriPh625"
-
-}
+    user: "PriPh625",
+};
 // Karte initialisieren
 let map = L.map('map').setView([lat, lng], zoom);
 

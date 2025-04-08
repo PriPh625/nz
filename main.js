@@ -203,127 +203,52 @@ for (let i = 0; i < STOPS.length; i++) {
     console.log(STOPS[i], STOPS[i].title);
 }
 // Karte initalisieren 
-
-let
-    map =
-        L.map('map');
-
-
+let map = L.map('map');
 
 // Maßstab einfügen 
-
 L.control.scale({
-
-    imperial:
-        false,
-
+     imperial: false,
 }).addTo(map);
 
-
-
-// Eine LayerGroup für alle Marker, die auch im Overlay auftaucht
-
-let
-    markerGroup =
-        L.layerGroup().addTo(map);
-
-
+// LayerGroup
+let markerGroup = L.layerGroup().addTo(map);
 
 // loop über Etappen 
-
-for (let
-    i
-        = 0;
-    i <
-    STOPS.length;
-    i++) {
-
-
+for (let i = 0; i < STOPS.length; i++) {
 
     //Maker zeichnen
-
-    let
-        marker =
-            L.marker([STOPS[i].lat,
-            STOPS[i].lng]);
-
-
+    let marker = L.marker([STOPS[i].lat,STOPS[i].lng]);
 
     //Popup definieren 
-
     marker.bindPopup(`
 
 <h2>${STOPS[i].title}</h2>
-
 <ul>
-
-<li> Geogr. Breite: ${STOPS[i].lat.toFixed(3)}°
- </li>
-
-<li> Geogr. Länge: ${STOPS[i].lng.toFixed(3)}°
- </li>
-
+<li> Geogr. Breite: ${STOPS[i].lat.toFixed(3)}° </li>
+<li> Geogr. Länge: ${STOPS[i].lng.toFixed(3)}°</li>
 </ul>
-
 `);
 
-
-
     // Marker zur Gruppe hinzufügen
-
     marker.addTo(markerGroup);
 
-
-
-    // auf eigene Etappe blicken und POpup öffnen
-
-    if (STOPS[i].user
-        ==
-        "PriPh625") {
-
-        map.setView([STOPS[i].lat,
-        STOPS[i].lng],
-            STOPS[i].zoom);
-
+    // auf eigene Etappe blicken und Popup öffnen
+    if (STOPS[i].user == "PriPh625") {
+        map.setView([STOPS[i].lat, STOPS[i].lng], STOPS[i].zoom);
         marker.openPopup();
-
     }
 
-
-
     // Pulldownmenü befüllen
-
-    let
-        option =
-            document.createElement("option");
-
-    option.value
-        =
-        STOPS[i].user;
-
-    option.text
-        =
-        STOPS[i].title;
-
-    if (STOPS[i].user
-        ==
-        "PriPh625") {
-
-        option.selected
-            =
-            true;
-
+    let option = document.createElement("option");
+    option.value = STOPS[i].user;
+    option.text = STOPS[i].title;
+    if (STOPS[i].user == "PriPh625") {
+        option.selected = true;
     }
 
     document.querySelector("#pulldown select").appendChild(option);
 
-
-
 };
-
-
-
-
 
 //Layercontrol
 
@@ -335,25 +260,11 @@ L.control.layers({
     "Orte":markerGroup,
 }).addTo(map);
 
-
-
-
-
 // auf Änderungen beim Pulldown reagieren
 document.querySelector("#pulldown select").onchange = function (evt) {
 
-        let
-            url =
-                `https://${evt.target.value}.github.io/nz`
-
+        let url = `https://${evt.target.value}.github.io/nz`
         //console.log(evt.target.value);
-
         //console.log(url);
-
-        window.location
-            =
-            url;
-
-
-
+        window.location = url;
     };

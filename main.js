@@ -202,50 +202,158 @@ const STOPS = [
 for (let i = 0; i < STOPS.length; i++) {
     console.log(STOPS[i], STOPS[i].title);
 }
+// Karte initalisieren 
 
-// Karte initialisieren
-let map = L.map('map');
+let
+    map =
+        L.map('map');
 
-// Hintergrund definieren
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+
+
+// Maßstab einfügen 
+
+L.control.scale({
+
+    imperial:
+        false,
+
 }).addTo(map);
 
-//loop über Etappen
-for (let i = 0; i < STOPS.length; i++) {
 
-    //Marker zeichnen
-    let marker = L.marker([STOPS[i].lat, STOPS[i].lng]).addTo(map);
 
-    //Popup definieren und öffnen
-    marker.bindPopup(`<h2>${STOPS[i].title}</h2> 
-        <ul> 
-            <li>Geogr. Breite: ${STOPS[i].lat.toFixed(5)}°</li> 
-            <li>Geogr. Länge: ${STOPS[i].lng.toFixed(5)}°</li> 
-        </ul>
-     `);
+// Eine LayerGroup für alle Marker, die auch im Overlay auftaucht
 
-     //auf eigene Etappe blicken und Popup öffnen
-     if (STOPS[i].user =="PriPh625") {
-       map.setView([STOPS[i].lat, STOPS[i].lng], STOPS[i].zoom)
+let
+    markerGroup =
+        L.layerGroup().addTo(map);
+
+
+
+// loop über Etappen 
+
+for (let
+    i
+        = 0;
+    i <
+    STOPS.length;
+    i++) {
+
+
+
+    //Maker zeichnen
+
+    let
+        marker =
+            L.marker([STOPS[i].lat,
+            STOPS[i].lng]);
+
+
+
+    //Popup definieren 
+
+    marker.bindPopup(`
+
+<h2>${STOPS[i].title}</h2>
+
+<ul>
+
+<li> Geogr. Breite: ${STOPS[i].lat.toFixed(3)}°
+ </li>
+
+<li> Geogr. Länge: ${STOPS[i].lng.toFixed(3)}°
+ </li>
+
+</ul>
+
+`);
+
+
+
+    // Marker zur Gruppe hinzufügen
+
+    marker.addTo(markerGroup);
+
+
+
+    // auf eigene Etappe blicken und POpup öffnen
+
+    if (STOPS[i].user
+        ==
+        "PriPh625") {
+
+        map.setView([STOPS[i].lat,
+        STOPS[i].lng],
+            STOPS[i].zoom);
+
         marker.openPopup();
-     }
 
-     //Pulldownmenü befüllen
-     let option = document.createElement("option");
-     option.value = STOPS[i].user;
-     option.text = STOPS[i].title;
-     if (STOPS[i].user =="PriPh625") {
-        option.selected = true;
-     }
-     document.querySelector("#pulldown select").appendChild(option);
-}
+    }
+
+
+
+    // Pulldownmenü befüllen
+
+    let
+        option =
+            document.createElement("option");
+
+    option.value
+        =
+        STOPS[i].user;
+
+    option.text
+        =
+        STOPS[i].title;
+
+    if (STOPS[i].user
+        ==
+        "PriPh625") {
+
+        option.selected
+            =
+            true;
+
+    }
+
+    document.querySelector("#pulldown select").appendChild(option);
+
+
+
+};
+
+
+
+
+
+//Layercontrol
+
+L.control.layers({
+    "OpenStreetMap":L.tileLayer.provider('OpenStreetMap.Mapnik').addTo(map),
+    "OpenTopoMap":L.tileLayer.provider('OpenTopoMap'),
+    "ESRIWorldImagery":L.tileLayer.provider('Esri.WorldImagery'),
+}, {
+    "Orte":markerGroup,
+}).addTo(map);
+
+
+
+
 
 // auf Änderungen beim Pulldown reagieren
-document.querySelector("#pulldown select").onchange = function(evt) {
-    let url =`https://${evt.target.value}.github.io/nz`;
-    //console.log(url);
-    //console.log(evt.target.value);
-    window.location = url;
-}
+document.querySelector("#pulldown select").onchange = function (evt) {
+
+        let
+            url =
+                `https://${evt.target.value}.github.io/nz`
+
+        //console.log(evt.target.value);
+
+        //console.log(url);
+
+        window.location
+            =
+            url;
+
+
+
+    };
